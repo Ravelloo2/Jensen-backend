@@ -1,4 +1,4 @@
-const credentials = {secretUser:"user" , secretPassword:"password"}
+const credentials = {secretUser:"Eliaz" , secretPassword:"Ravello"}
 
 const cors = require('cors')
 const bodyParser = ('body-parser')
