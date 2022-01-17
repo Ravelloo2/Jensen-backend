@@ -13,8 +13,6 @@ app.get('/', (req, res) => {
         .split(' ')[1] || ''
 
     const [user, password] = Buffer.from(encodedAuth, 'base64')
-        console.log(user)
-        console.log(password)
         .toString().split(':')
         if(user === credentials.secretUser && password === credentials.secretPassword) {
             res.status(200).send({"STATUS":"SUCCESS"})
