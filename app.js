@@ -6,6 +6,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 
 const app = express()
+const PORT = process.env.PORT || 3000
 
 app.use(function (req, res, next) {
     res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
@@ -63,6 +64,6 @@ app.post('/authorize', (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log("Listening on port 3000")
+app.listen(PORT , ()=>{
+    console.log(`STARTED LISTENING ON PORT ${PORT}`)
 });
