@@ -4,9 +4,19 @@ const cors = require('cors')
 const bodyParser = ('body-parser')
 const express = require('express')
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
 
 const app = express()
 const PORT = process.env.PORT || 3000
+
+var http = require('http')
+var https = require('https')
+
+var options = {
+    key: fs.readFileSync('abels-key.pem'),
+    cert: fs.readFileSync('abels-cert.pem')
+
+}
 
 app.use(function (req, res, next) {
     res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self'; img-src 'self'; script-src 'self'; style-src 'self'; frame-src 'self'");
@@ -23,21 +33,6 @@ app.get('/', (req, res) => {
     body = {"status": "availabe"}
     res.status(200).send(body)
 })
-
-// app.get('/', (req, res) => {
-//     const encodedAuth = (req.headers.authorization ||'')
-//         .split(' ')[1] || ''
-
-//     const [user, password] = Buffer.from(encodedAuth, 'base64')
-//         .toString().split(':')
-//         if(user === credentials.secretUser && password === credentials.secretPassword) {
-//             res.status(200).send({"STATUS":"SUCCESS"})
-//             console.log("Logged in")
-//         } else {
-//             res.set('WWW-Authenticate', 'Basic realm="Access to Index"')
-//             res.status(401).send('Unauthorized Access')
-//         }
-// })
 
 app.get("/health", (req, res) => {
     headers = {"http_status":200, "cache-control": "no-cache"}
@@ -64,6 +59,10 @@ app.post('/authorize', (req, res) => {
     }
 });
 
-app.listen(PORT , ()=>{
-    console.log(`STARTED LISTENING ON PORT ${PORT}`)
+http.createServer(app).listen(8080, function() {
+    console.log('HTTP listening on 8080');
 });
+
+https.createServer(options, app).listen(PORT, function() {
+    console.log('HTTPS listening on 3000')
+})
